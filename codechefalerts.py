@@ -10,9 +10,11 @@ import os
 from threading import Thread
 from operator import itemgetter
 
+FILEPATH = os.path.dirname(os.path.abspath(__file__))
+
 def notify(header,text,color):
 	pynotify.init('Codechef Alert')
-	imageURI = 'file://' + os.path.dirname(os.path.abspath(__file__)) + '/icons/'+color+'chef.jpeg'
+	imageURI = 'file://' + FILEPATH + '/icons/'+color+'chef.jpeg'
 	n = pynotify.Notification(header,text, imageURI)
 	n.show()
 
@@ -52,7 +54,7 @@ def write_contest_config():
 				config.set(contest[i],'start_date_time',contest[i+1])                  # set contest starting date and time
 				config.set(contest[i],'end_date_time',contest[i+2])                    # set contest ending date and time
 			
-		with open(os.path.dirname(os.path.abspath(__file__))+'/contests.cfg', 'wb') as configfile:                                 # write contests to cfg file.           
+		with open(FILEPATH+'/contests.cfg', 'wb') as configfile:                                 # write contests to cfg file.           
 			config.write(configfile)
 	except:
 		time.sleep(360)                      # sleep due to internet problems or site is down
@@ -61,14 +63,14 @@ def write_contest_config():
 
 def get_config_update_date():
 	config = ConfigParser.RawConfigParser()
-	config.read(os.path.dirname(os.path.abspath(__file__))+'/contests.cfg')
+	config.read(FILEPATH+'/contests.cfg')
 	return get_datetime_object(config.get('STATS','last_update'))
 	
 	
 	
 def read_contest_config():
 	config = ConfigParser.RawConfigParser()
-	config.read(os.path.dirname(os.path.abspath(__file__))+'/contests.cfg')
+	config.read(FILEPATH+'/contests.cfg')
 	contests = []
 	for i in config.sections()[len(config.sections())-1:0:-1]:
 		s = None
